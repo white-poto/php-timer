@@ -11,20 +11,34 @@ namespace Jenner;
 
 class Timer
 {
+    /**
+     * @var array 报告
+     */
     protected $report = array();
 
+    /**
+     * @var string 内存单位
+     */
     protected $memory_unit;
+
 
     const UNIT_BYTE = 'Bytes';
     const UNIT_KB = 'KB';
     const UNIT_MB = 'MB';
     const UNIT_GB = 'GB';
 
+    /**
+     * @param string $memory_unit 内存单位
+     */
     public function __construct($memory_unit = Timer::UNIT_BYTE)
     {
         $this->memory_unit = $memory_unit;
     }
 
+    /**
+     * 记录当前运行状态
+     * @param string $mark
+     */
     public function mark($mark = "default")
     {
         $report = array(
@@ -38,6 +52,11 @@ class Timer
     }
 
 
+    /**
+     * 获取报告
+     * @param null $mark
+     * @return array
+     */
     public function getReport($mark = null)
     {
         if (is_null($mark)) {
@@ -51,12 +70,22 @@ class Timer
         return $this->report[$mark];
     }
 
+    /**
+     * 获取总体差异报告
+     * @return array
+     */
     public function getDiffReport()
     {
         $marks = array_keys($this->report);
         return $this->getDiffByStartAndEnd($marks[0], $marks[count($marks) - 1]);
     }
 
+    /**
+     * 根据开始mark和结束mark获取差异报告
+     * @param $start_mark
+     * @param $end_mark
+     * @return array
+     */
     public function getDiffByStartAndEnd($start_mark, $end_mark)
     {
         if (!array_key_exists($start_mark, $this->report)
@@ -79,6 +108,9 @@ class Timer
         return $diff_report;
     }
 
+    /**
+     * 打印总体差异报告
+     */
     public function printDiffReport()
     {
         $diff_report = $this->getDiffReport();
@@ -86,6 +118,11 @@ class Timer
         $this->printReportRecord($mark, $diff_report);
     }
 
+    /**
+     * 打印开始mark和结束mark的差异报告
+     * @param $start_mark
+     * @param $end_mark
+     */
     public function printDiffReportByStartAndEnd($start_mark, $end_mark)
     {
         $diff_report = $this->getDiffByStartAndEnd($start_mark, $end_mark);
@@ -93,6 +130,10 @@ class Timer
         $this->printReportRecord($mark, $diff_report);
     }
 
+    /**
+     * 打印报告
+     * @param null $mark
+     */
     public function printReport($mark = null)
     {
         if (is_null($mark)) {
@@ -109,6 +150,11 @@ class Timer
         $this->printReportRecord($mark, $this->report[$mark]);
     }
 
+    /**
+     * 打印一条报告
+     * @param $mark
+     * @param $report
+     */
     protected function printReportRecord($mark, $report)
     {
         $memory_rate = $this->getMemoryRate();
@@ -123,6 +169,10 @@ class Timer
 
     }
 
+    /**
+     * 获取内存单位
+     * @return int
+     */
     protected function getMemoryRate()
     {
         switch ($this->memory_unit) {
@@ -140,8 +190,7 @@ class Timer
     }
 
     /**
-     * Actual Time
-     *
+     * 获取当前微秒时间
      * @return String Time
      */
     protected function getTime()
