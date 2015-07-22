@@ -113,6 +113,7 @@ class Timer
     {
         $memory_rate = $this->getMemoryRate();
         $memory_unit = $this->memory_unit;
+        echo '------------------------------------------' . PHP_EOL;
         echo "mark:" . $mark . PHP_EOL
             . "time:" . $report['time'] . PHP_EOL
             . "memory_real:" . ($report['memory_real'] / $memory_rate) . $memory_unit . PHP_EOL
