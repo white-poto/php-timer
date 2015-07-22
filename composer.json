@@ -6,6 +6,13 @@
     "memory",
     "memory used"
   ],
+  "version": "v0.1",
+  "authors": [
+    {
+      "name": "Jenner",
+      "email": "hypxm@qq.com"
+    }
+  ],
   "license": "MIT",
   "type": "package",
   "require": {
