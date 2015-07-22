@@ -106,7 +106,7 @@ class Timer
 
     protected function printReportRecord($mark, $report)
     {
-        $memory_rate = $this->memory_unit;
+        $memory_rate = $this->getMemoryRate();
         $memory_unit = $this->memory_unit . 'B';
         echo "mark:" . $mark . PHP_EOL
             . "time:" . $report['time'] . PHP_EOL
