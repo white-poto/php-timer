@@ -15,9 +15,14 @@ class Timer
 
     protected $memory_unit;
 
-    public function __construct($memory_unit = 'b')
+    const UNIT_BYTE = 'Bytes';
+    const UNIT_KB = 'KB';
+    const UNIT_MB = 'MB';
+    const UNIT_GB = 'GB';
+
+    public function __construct($memory_unit = Timer::UNIT_BYTE)
     {
-        $this->memory_unit = 'b';
+        $this->memory_unit = $memory_unit;
     }
 
     public function mark($mark = "default")
@@ -107,7 +112,7 @@ class Timer
     protected function printReportRecord($mark, $report)
     {
         $memory_rate = $this->getMemoryRate();
-        $memory_unit = $this->memory_unit . 'B';
+        $memory_unit = $this->memory_unit;
         echo "mark:" . $mark . PHP_EOL
             . "time:" . $report['time'] . PHP_EOL
             . "memory_real:" . ($report['memory_real'] / $memory_rate) . $memory_unit . PHP_EOL
@@ -120,13 +125,13 @@ class Timer
     protected function getMemoryRate()
     {
         switch ($this->memory_unit) {
-            case 'B' :
+            case Timer::UNIT_BYTE :
                 return 1;
-            case 'K' :
+            case Timer::UNIT_KB :
                 return 1024;
-            case 'M' :
+            case Timer::UNIT_MB :
                 return 1024 * 1024;
-            case 'G' :
+            case Timer::UNIT_GB :
                 return 1024 * 1024 * 1024;
             default :
                 throw new \LogicException('unknown memory unit');
