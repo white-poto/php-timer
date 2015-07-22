@@ -19,3 +19,4 @@ sleep(4);
 $timer->mark('d');
 $timer->printReport();
 $timer->printDiffReportByStartAndEnd('a', 'b');
+$timer->printDiffReport();

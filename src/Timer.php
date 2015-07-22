@@ -13,6 +13,10 @@ class Timer
 {
     protected $report = array();
 
+    public function __construct($memory_unit = 'kb'){
+
+    }
+
     public function mark($mark = "default")
     {
         $report = array(
@@ -39,6 +43,11 @@ class Timer
         return $this->report[$mark];
     }
 
+    public function getDiffReport(){
+        $marks = array_keys($this->report);
+        return $this->getDiffByStartAndEnd($marks[0], $marks[count($marks) - 1]);
+    }
+
     public function getDiffByStartAndEnd($start_mark, $end_mark)
     {
         if (!array_key_exists($start_mark, $this->report)
@@ -59,6 +68,12 @@ class Timer
         );
 
         return $diff_report;
+    }
+
+    public function printDiffReport(){
+        $diff_report = $this->getDiffReport();
+        $mark = '[total diff]';
+        $this->printReportRecord($mark, $diff_report);
     }
 
     public function printDiffReportByStartAndEnd($start_mark, $end_mark)
@@ -88,7 +103,7 @@ class Timer
     {
         echo "mark:" . $mark . PHP_EOL
             . "time:" . $report['time'] . PHP_EOL
-            . "memory_real" . $report['memory_real'] . PHP_EOL
+            . "memory_real:" . $report['memory_real'] . PHP_EOL
             . "memory_emalloc:" . $report['memory_emalloc'] . PHP_EOL
             . "memory_peak_real:" . $report['memory_peak_real'] . PHP_EOL
             . "memory_peak_emalloc:" . $report['memory_peak_emalloc'] . PHP_EOL;
