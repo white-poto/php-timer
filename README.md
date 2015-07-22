@@ -22,7 +22,10 @@ $timer->mark('d');
 //打印总体报告（不包含差值）
 $timer->printReport();
 //获取总体报告，返回数组
-$report = $time->getReport();
+$report = $timer->getReport();
+//获取一个mark的报告
+$a_report = $timer->getReport('a');
+print_r($a_report);
 //打印a状态和b状态的差异信息，包含运行时间、使用内存等
 $timer->printDiffReportByStartAndEnd('a', 'b');
 //获取a状态和b状态的差异报告
@@ -37,44 +40,52 @@ $diff_report = $timer->getDiffReport();
 ```shell
 ------------------------------------------
 mark:a
-time:1437534443.7121s
+time:1437535424.9998s
 memory_real:1280KB
-memory_emalloc:830.4375KB
+memory_emalloc:833.046875KB
 memory_peak_real:1280KB
-memory_peak_emalloc:841.625KB
+memory_peak_emalloc:843.2890625KB
 ------------------------------------------
 mark:b
-time:1437534445.7123s
+time:1437535427s
 memory_real:1280KB
-memory_emalloc:831.625KB
+memory_emalloc:834.2265625KB
 memory_peak_real:1280KB
-memory_peak_emalloc:841.625KB
+memory_peak_emalloc:843.2890625KB
 ------------------------------------------
 mark:c
-time:1437534448.7125s
+time:1437535430.0002s
 memory_real:1280KB
-memory_emalloc:832.5859375KB
+memory_emalloc:835.1875KB
 memory_peak_real:1280KB
-memory_peak_emalloc:841.625KB
+memory_peak_emalloc:843.2890625KB
 ------------------------------------------
 mark:d
-time:1437534452.7127s
+time:1437535434.0004s
 memory_real:1280KB
-memory_emalloc:833.546875KB
+memory_emalloc:836.1484375KB
 memory_peak_real:1280KB
-memory_peak_emalloc:841.625KB
+memory_peak_emalloc:843.2890625KB
+Array
+(
+    [time] => 1437535424.9998
+    [memory_real] => 1310720
+    [memory_emalloc] => 853040
+    [memory_peak_real] => 1310720
+    [memory_peak_emalloc] => 863528
+)
 ------------------------------------------
 mark:[diff] start_mark:a end_mark:b
-time:2.0001969337463s
+time:2.0001850128174s
 memory_real:0KB
-memory_emalloc:1.1875KB
+memory_emalloc:1.1796875KB
 memory_peak_real:0KB
 memory_peak_emalloc:0KB
 ------------------------------------------
 mark:[total diff]
-time:9.0006530284882s
+time:9.0006000995636s
 memory_real:0KB
-memory_emalloc:3.109375KB
+memory_emalloc:3.1015625KB
 memory_peak_real:0KB
 memory_peak_emalloc:0KB
 ```
