@@ -26,6 +26,9 @@ $timer->mark('d');
 $timer->printReport();
 //获取总体报告，返回数组
 $report = $timer->getReport();
+//获取一个mark的报告
+$a_report = $timer->getReport('a');
+print_r($a_report);
 //打印a状态和b状态的差异信息，包含运行时间、使用内存等
 $timer->printDiffReportByStartAndEnd('a', 'b');
 //获取a状态和b状态的差异报告
