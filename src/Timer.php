@@ -115,7 +115,7 @@ class Timer
         $memory_unit = $this->memory_unit;
         echo '------------------------------------------' . PHP_EOL;
         echo "mark:" . $mark . PHP_EOL
-            . "time:" . $report['time'] . PHP_EOL
+            . "time:" . $report['time'] . 's' . PHP_EOL
             . "memory_real:" . ($report['memory_real'] / $memory_rate) . $memory_unit . PHP_EOL
             . "memory_emalloc:" . ($report['memory_emalloc'] / $memory_rate) . $memory_unit . PHP_EOL
             . "memory_peak_real:" . ($report['memory_peak_real'] / $memory_rate) . $memory_unit . PHP_EOL
