@@ -21,10 +21,16 @@ sleep(4);
 $timer->mark('d');
 //打印总体报告（不包含差值）
 $timer->printReport();
+//获取总体报告，返回数组
+$report = $time->getReport();
 //打印a状态和b状态的差异信息，包含运行时间、使用内存等
 $timer->printDiffReportByStartAndEnd('a', 'b');
-//获取第一个mark和最后一个mark之间的差异信息
+//获取a状态和b状态的差异报告
+$ab_diff_report = $timer->getDiffReportByStartAndEnd('a', 'b');
+//打印第一个mark和最后一个mark之间的差异信息
 $timer->printDiffReport();
+//获取第一个mark和最后一个mark之间的差异信息
+$diff_report = $timer->getDiffReport();
 ```
 
 输入结果如下  

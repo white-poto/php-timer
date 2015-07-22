@@ -77,7 +77,7 @@ class Timer
     public function getDiffReport()
     {
         $marks = array_keys($this->report);
-        return $this->getDiffByStartAndEnd($marks[0], $marks[count($marks) - 1]);
+        return $this->getDiffReportByStartAndEnd($marks[0], $marks[count($marks) - 1]);
     }
 
     /**
@@ -86,7 +86,7 @@ class Timer
      * @param $end_mark
      * @return array
      */
-    public function getDiffByStartAndEnd($start_mark, $end_mark)
+    public function getDiffReportByStartAndEnd($start_mark, $end_mark)
     {
         if (!array_key_exists($start_mark, $this->report)
             || !array_key_exists($end_mark, $this->report)
@@ -125,7 +125,7 @@ class Timer
      */
     public function printDiffReportByStartAndEnd($start_mark, $end_mark)
     {
-        $diff_report = $this->getDiffByStartAndEnd($start_mark, $end_mark);
+        $diff_report = $this->getDiffReportByStartAndEnd($start_mark, $end_mark);
         $mark = '[diff] start_mark:' . $start_mark . ' end_mark:' . $end_mark;
         $this->printReportRecord($mark, $diff_report);
     }
