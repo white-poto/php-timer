@@ -13,8 +13,11 @@ class Timer
 {
     protected $report = array();
 
-    public function __construct($memory_unit = 'kb'){
+    protected $memory_unit;
 
+    public function __construct($memory_unit = 'b')
+    {
+        $this->memory_unit = 'b';
     }
 
     public function mark($mark = "default")
@@ -43,7 +46,8 @@ class Timer
         return $this->report[$mark];
     }
 
-    public function getDiffReport(){
+    public function getDiffReport()
+    {
         $marks = array_keys($this->report);
         return $this->getDiffByStartAndEnd($marks[0], $marks[count($marks) - 1]);
     }
@@ -70,7 +74,8 @@ class Timer
         return $diff_report;
     }
 
-    public function printDiffReport(){
+    public function printDiffReport()
+    {
         $diff_report = $this->getDiffReport();
         $mark = '[total diff]';
         $this->printReportRecord($mark, $diff_report);
@@ -101,13 +106,31 @@ class Timer
 
     protected function printReportRecord($mark, $report)
     {
+        $memory_rate = $this->memory_unit;
+        $memory_unit = $this->memory_unit . 'B';
         echo "mark:" . $mark . PHP_EOL
             . "time:" . $report['time'] . PHP_EOL
-            . "memory_real:" . $report['memory_real'] . PHP_EOL
-            . "memory_emalloc:" . $report['memory_emalloc'] . PHP_EOL
-            . "memory_peak_real:" . $report['memory_peak_real'] . PHP_EOL
-            . "memory_peak_emalloc:" . $report['memory_peak_emalloc'] . PHP_EOL;
+            . "memory_real:" . ($report['memory_real'] / $memory_rate) . $memory_unit . PHP_EOL
+            . "memory_emalloc:" . ($report['memory_emalloc'] / $memory_rate) . $memory_unit . PHP_EOL
+            . "memory_peak_real:" . ($report['memory_peak_real'] / $memory_rate) . $memory_unit . PHP_EOL
+            . "memory_peak_emalloc:" . ($report['memory_peak_emalloc'] / $memory_rate) . $memory_unit . PHP_EOL;
 
+    }
+
+    protected function getMemoryRate()
+    {
+        switch ($this->memory_unit) {
+            case 'B' :
+                return 1;
+            case 'K' :
+                return 1024;
+            case 'M' :
+                return 1024 * 1024;
+            case 'G' :
+                return 1024 * 1024 * 1024;
+            default :
+                throw new \LogicException('unknown memory unit');
+        }
     }
 
     /**
