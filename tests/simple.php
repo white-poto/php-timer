@@ -37,3 +37,7 @@ $ab_diff_report = $timer->getDiffReportByStartAndEnd('a', 'b');
 $timer->printDiffReport();
 //获取第一个mark和最后一个mark之间的差异信息
 $diff_report = $timer->getDiffReport();
+
+$timer->logReport('/tmp/php-time.log1');
+$timer->logDiffReport('/tmp/php-time.log2');
+$timer->logDiffReportByStartAndEnd('/tmp/php-time.log3', 'a', 'b');

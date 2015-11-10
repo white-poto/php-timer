@@ -1,9 +1,9 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Jenner
- * Date: 2015/7/22
- * Time: 10:06
+ * @author Jenner <hyxm@qq.com>
+ * @license MIT
+ * @datetime 2015/7/22 10:06
+ * @homepage http://www.huyanping.cn
  */
 
 namespace Jenner;
@@ -12,15 +12,14 @@ namespace Jenner;
 class Timer
 {
     /**
-     * @var array 报告
+     * @var array runtime report
      */
     protected $report = array();
 
     /**
-     * @var string 内存单位
+     * @var string memory size unit
      */
     protected $memory_unit;
-
 
     const UNIT_BYTE = 'Bytes';
     const UNIT_KB = 'KB';
@@ -28,7 +27,7 @@ class Timer
     const UNIT_GB = 'GB';
 
     /**
-     * @param string $memory_unit 内存单位
+     * @param string $memory_unit
      */
     public function __construct($memory_unit = Timer::UNIT_BYTE)
     {
@@ -36,8 +35,7 @@ class Timer
     }
 
     /**
-     * 记录当前运行状态
-     * @param string $mark
+     * @param string $mark report mark
      */
     public function mark($mark = "default")
     {
@@ -51,11 +49,12 @@ class Timer
         $this->report[$mark] = $report;
     }
 
-
     /**
-     * 获取报告
-     * @param null $mark
-     * @return array
+     * get report by mark
+     *
+     * @param null|string $mark
+     * @return array if mark is null, return all report,
+     * else return report of mark
      */
     public function getReport($mark = null)
     {
@@ -71,7 +70,9 @@ class Timer
     }
 
     /**
-     * 获取总体差异报告
+     * get total diff report between the first
+     * mark and the last mark
+     *
      * @return array
      */
     public function getDiffReport()
@@ -81,9 +82,10 @@ class Timer
     }
 
     /**
-     * 根据开始mark和结束mark获取差异报告
-     * @param $start_mark
-     * @param $end_mark
+     * get diff report between start_mark and end_mark
+     *
+     * @param string $start_mark
+     * @param string $end_mark
      * @return array
      */
     public function getDiffReportByStartAndEnd($start_mark, $end_mark)
@@ -109,30 +111,60 @@ class Timer
     }
 
     /**
-     * 打印总体差异报告
+     * Log report to file. If the mark is null,write all report into
+     * the log file,else write the report of mark into the log file
+     *
+     * @param string $file
+     * @param string|null $mark
      */
-    public function printDiffReport()
+    public function logReport($file, $mark = null)
+    {
+        if (is_null($mark)) {
+            foreach ($this->report as $mark => $report) {
+                $this->logReportRecord($file, $mark, $report);
+            }
+            return;
+        }
+
+        if (!array_key_exists($mark, $this->report)) {
+            throw new \LogicException('mask does not exists');
+        }
+
+        $this->logReportRecord($file, $mark, $this->report[$mark]);
+    }
+
+    /**
+     * Write total diff report into the log file
+     *
+     * @param string $file
+     */
+    public function logDiffReport($file)
     {
         $diff_report = $this->getDiffReport();
         $mark = '[total diff]';
-        $this->printReportRecord($mark, $diff_report);
+        $this->logReportRecord($file, $mark, $diff_report);
     }
 
     /**
-     * 打印开始mark和结束mark的差异报告
-     * @param $start_mark
-     * @param $end_mark
+     * Write the diff report between start_mark and end_mark
+     * into the log file.
+     *
+     * @param string $file
+     * @param string $start_mark
+     * @param string $end_mark
      */
-    public function printDiffReportByStartAndEnd($start_mark, $end_mark)
+    public function logDiffReportByStartAndEnd($file, $start_mark, $end_mark)
     {
         $diff_report = $this->getDiffReportByStartAndEnd($start_mark, $end_mark);
         $mark = '[diff] start_mark:' . $start_mark . ' end_mark:' . $end_mark;
-        $this->printReportRecord($mark, $diff_report);
+        $this->logReportRecord($file, $mark, $diff_report);
     }
 
     /**
-     * 打印报告
-     * @param null $mark
+     * Print the report. If mark is null, print total report,
+     * else print the report of mark
+     *
+     * @param string|null $mark
      */
     public function printReport($mark = null)
     {
@@ -151,9 +183,33 @@ class Timer
     }
 
     /**
-     * 打印一条报告
-     * @param $mark
-     * @param $report
+     * Print the total report
+     */
+    public function printDiffReport()
+    {
+        $diff_report = $this->getDiffReport();
+        $mark = '[total diff]';
+        $this->printReportRecord($mark, $diff_report);
+    }
+
+    /**
+     * Print the diff report between start_mark and end_mark
+     *
+     * @param string $start_mark
+     * @param string $end_mark
+     */
+    public function printDiffReportByStartAndEnd($start_mark, $end_mark)
+    {
+        $diff_report = $this->getDiffReportByStartAndEnd($start_mark, $end_mark);
+        $mark = '[diff] start_mark:' . $start_mark . ' end_mark:' . $end_mark;
+        $this->printReportRecord($mark, $diff_report);
+    }
+
+    /**
+     * Print the report of mark
+     *
+     * @param string $mark
+     * @param array $report
      */
     protected function printReportRecord($mark, $report)
     {
@@ -170,7 +226,38 @@ class Timer
     }
 
     /**
-     * 获取内存单位
+     * Write the report of mark into the log file
+     *
+     * @param string $file
+     * @param string $mark
+     * @param array $report
+     */
+    protected function logReportRecord($file, $mark, $report)
+    {
+        if (!file_exists($file) && !touch($file)) {
+            throw new \RuntimeException("file is not exists or can not be created");
+        }
+
+        $memory_rate = $this->getMemoryRate();
+        $memory_unit = $this->memory_unit;
+        $message = '------------------------------------------' . PHP_EOL;
+        $message .= "mark:" . $mark . PHP_EOL
+            . "time:" . $report['time'] . 's' . PHP_EOL
+            . "memory_real:" . ($report['memory_real'] / $memory_rate) . $memory_unit . PHP_EOL
+            . "memory_emalloc:" . ($report['memory_emalloc'] / $memory_rate) . $memory_unit . PHP_EOL
+            . "memory_peak_real:" . ($report['memory_peak_real'] / $memory_rate) . $memory_unit . PHP_EOL
+            . "memory_peak_emalloc:" . ($report['memory_peak_emalloc'] / $memory_rate) . $memory_unit . PHP_EOL;
+
+        $write = file_put_contents($file, $message, FILE_APPEND);
+
+        if ($write === false) {
+            throw new \RuntimeException("write file failed");
+        }
+    }
+
+    /**
+     * get the memory size unit
+     *
      * @return int
      */
     protected function getMemoryRate()
@@ -190,8 +277,9 @@ class Timer
     }
 
     /**
-     * 获取当前微秒时间
-     * @return String Time
+     * Get microsecond time
+     *
+     * @return array|mixed
      */
     protected function getTime()
     {
