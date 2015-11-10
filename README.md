@@ -2,7 +2,17 @@ php-timer
 ================
 php runtime status report tool
 
-How to use?
+Import
+----------------
+```shell
+composer require jenner/timer
+```
+Or  
+```php
+require /path/to/php-time/src/Time.php
+```
+
+What it can do?
 -------------
 ```php
 require dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
@@ -35,6 +45,12 @@ $ab_diff_report = $timer->getDiffReportByStartAndEnd('a', 'b');
 $timer->printDiffReport();
 // get the total diff report
 $diff_report = $timer->getDiffReport();
+// write the total report into the log file
+$timer->logReport('/tmp/php-time.log1');
+// write the diff report into the log file
+$timer->logDiffReport('/tmp/php-time.log2');
+// write the diff report between a and b into the log file
+$timer->logDiffReportByStartAndEnd('/tmp/php-time.log3', 'a', 'b');
 ```
 
 result:  
