@@ -9,35 +9,37 @@
 
 require dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
-//初始化，设置内存单位
+// init, set the memory size unit
 $timer = new \Jenner\Timer(\Jenner\Timer::UNIT_KB);
-//记录a状态
+// mark a
 $timer->mark('a');
 sleep(2);
-//记录b状态
+// mark b
 $timer->mark('b');
 sleep(3);
-//记录c状态
+// mark c
 $timer->mark('c');
 sleep(4);
-//记录d状态
+// mark d
 $timer->mark('d');
-//打印总体报告（不包含差值）
+// print total report
 $timer->printReport();
-//获取总体报告，返回数组
+// get total report
 $report = $timer->getReport();
-//获取一个mark的报告
+// get the report of mark
 $a_report = $timer->getReport('a');
 print_r($a_report);
-//打印a状态和b状态的差异信息，包含运行时间、使用内存等
+// get the diff report between a and b
 $timer->printDiffReportByStartAndEnd('a', 'b');
-//获取a状态和b状态的差异报告
+// get the diff report between a and b
 $ab_diff_report = $timer->getDiffReportByStartAndEnd('a', 'b');
-//打印第一个mark和最后一个mark之间的差异信息
+// print the total diff report
 $timer->printDiffReport();
-//获取第一个mark和最后一个mark之间的差异信息
+// get the total diff report
 $diff_report = $timer->getDiffReport();
-
+// write the total report into the log file
 $timer->logReport('/tmp/php-time.log1');
+// write the diff report into the log file
 $timer->logDiffReport('/tmp/php-time.log2');
+// write the diff report between a and b into the log file
 $timer->logDiffReportByStartAndEnd('/tmp/php-time.log3', 'a', 'b');

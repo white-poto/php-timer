@@ -1,43 +1,42 @@
-php-timer
-================
-php runtime status report tool
+# php-timer
 
-How to use?
--------------
+php运行状态报告工具
+-------------------
+使用方法如下  
 ```php
 require dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
-// init, set the memory size unit
+//初始化，设置内存单位
 $timer = new \Jenner\Timer(\Jenner\Timer::UNIT_KB);
-// mark a
+//记录a状态
 $timer->mark('a');
 sleep(2);
-// mark b
+//记录b状态
 $timer->mark('b');
 sleep(3);
-// mark c
+//记录c状态
 $timer->mark('c');
 sleep(4);
-// mark d
+//记录d状态
 $timer->mark('d');
-// print total report
+//打印总体报告（不包含差值）
 $timer->printReport();
-// get total report
+//获取总体报告，返回数组
 $report = $timer->getReport();
-// get the report of mark
+//获取一个mark的报告
 $a_report = $timer->getReport('a');
 print_r($a_report);
-// get the diff report between a and b
+//打印a状态和b状态的差异信息，包含运行时间、使用内存等
 $timer->printDiffReportByStartAndEnd('a', 'b');
-// get the diff report between a and b
+//获取a状态和b状态的差异报告
 $ab_diff_report = $timer->getDiffReportByStartAndEnd('a', 'b');
-// print the total diff report
+//打印第一个mark和最后一个mark之间的差异信息
 $timer->printDiffReport();
-// get the total diff report
+//获取第一个mark和最后一个mark之间的差异信息
 $diff_report = $timer->getDiffReport();
 ```
 
-result:  
+输入结果如下  
 ```shell
 ------------------------------------------
 mark:a
