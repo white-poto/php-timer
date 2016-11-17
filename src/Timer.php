@@ -206,6 +206,42 @@ class Timer
     }
 
     /**
+     * get all diff report between all marks
+     *
+     * @return array
+     */
+    public function getAllDiffReport()
+    {
+        $diff_report = array();
+        $pre = null;
+        foreach ($this->report as $key => $value) {
+            if (is_null($pre)) {
+                $pre = $key;
+                continue;
+            }
+            $cur_report = $this->getDiffReportByStartAndEnd($pre, $key);
+            $diff_report[$pre . '-' . $key] = $cur_report;
+        }
+
+        return $diff_report;
+    }
+
+    /**
+     * print all diff report between all marks
+     */
+    public function printAllDiffReport()
+    {
+        $pre = null;
+        foreach ($this->report as $key => $value) {
+            if (is_null($pre)) {
+                $pre = $key;
+                continue;
+            }
+            $this->printDiffReportByStartAndEnd($pre, $key);
+        }
+    }
+
+    /**
      * Print the report of mark
      *
      * @param string $mark
@@ -236,6 +272,10 @@ class Timer
     {
         if (!file_exists($file) && !touch($file)) {
             throw new \RuntimeException("file is not exists or can not be created");
+        }
+
+        if (!is_writable($file)) {
+            throw new \RuntimeException("file is note writable");
         }
 
         $memory_rate = $this->getMemoryRate();

@@ -43,3 +43,5 @@ $timer->logReport('/tmp/php-time.log1');
 $timer->logDiffReport('/tmp/php-time.log2');
 // write the diff report between a and b into the log file
 $timer->logDiffReportByStartAndEnd('/tmp/php-time.log3', 'a', 'b');
+// print all diff report
+$timer->printAllDiffReport();
